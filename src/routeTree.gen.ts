@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as NewIndexImport } from './routes/new/index'
 import { Route as GettingStartedIndexImport } from './routes/getting-started/index'
 import { Route as DashboardLayoutImport } from './routes/dashboard/_layout'
 import { Route as DashboardLayoutIndexImport } from './routes/dashboard/_layout/index'
@@ -27,6 +28,12 @@ const DashboardImport = createFileRoute('/dashboard')()
 const DashboardRoute = DashboardImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const NewIndexRoute = NewIndexImport.update({
+  id: '/new/',
+  path: '/new/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -79,6 +86,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GettingStartedIndexImport
       parentRoute: typeof rootRoute
     }
+    '/new/': {
+      id: '/new/'
+      path: '/new'
+      fullPath: '/new'
+      preLoaderRoute: typeof NewIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/dashboard/_layout/resumes': {
       id: '/dashboard/_layout/resumes'
       path: '/resumes'
@@ -127,6 +141,7 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardLayoutRouteWithChildren
   '/getting-started': typeof GettingStartedIndexRoute
+  '/new': typeof NewIndexRoute
   '/dashboard/resumes': typeof DashboardLayoutResumesRouteRoute
   '/dashboard/': typeof DashboardLayoutIndexRoute
 }
@@ -134,6 +149,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/dashboard': typeof DashboardLayoutIndexRoute
   '/getting-started': typeof GettingStartedIndexRoute
+  '/new': typeof NewIndexRoute
   '/dashboard/resumes': typeof DashboardLayoutResumesRouteRoute
 }
 
@@ -142,6 +158,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteWithChildren
   '/dashboard/_layout': typeof DashboardLayoutRouteWithChildren
   '/getting-started/': typeof GettingStartedIndexRoute
+  '/new/': typeof NewIndexRoute
   '/dashboard/_layout/resumes': typeof DashboardLayoutResumesRouteRoute
   '/dashboard/_layout/': typeof DashboardLayoutIndexRoute
 }
@@ -151,15 +168,17 @@ export interface FileRouteTypes {
   fullPaths:
     | '/dashboard'
     | '/getting-started'
+    | '/new'
     | '/dashboard/resumes'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/dashboard' | '/getting-started' | '/dashboard/resumes'
+  to: '/dashboard' | '/getting-started' | '/new' | '/dashboard/resumes'
   id:
     | '__root__'
     | '/dashboard'
     | '/dashboard/_layout'
     | '/getting-started/'
+    | '/new/'
     | '/dashboard/_layout/resumes'
     | '/dashboard/_layout/'
   fileRoutesById: FileRoutesById
@@ -168,11 +187,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRouteWithChildren
   GettingStartedIndexRoute: typeof GettingStartedIndexRoute
+  NewIndexRoute: typeof NewIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRouteWithChildren,
   GettingStartedIndexRoute: GettingStartedIndexRoute,
+  NewIndexRoute: NewIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -186,7 +207,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/dashboard",
-        "/getting-started/"
+        "/getting-started/",
+        "/new/"
       ]
     },
     "/dashboard": {
@@ -205,6 +227,9 @@ export const routeTree = rootRoute
     },
     "/getting-started/": {
       "filePath": "getting-started/index.tsx"
+    },
+    "/new/": {
+      "filePath": "new/index.tsx"
     },
     "/dashboard/_layout/resumes": {
       "filePath": "dashboard/_layout/resumes/route.tsx",

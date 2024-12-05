@@ -16,7 +16,7 @@ export const Dashboard = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <Link href="/getting-started  ">
+          <Link href="/getting-started">
             <Button variant={"outline"} size={"sm"}>
               Get Started
             </Button>
