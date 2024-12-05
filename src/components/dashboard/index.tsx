@@ -1,4 +1,3 @@
-
 import { Button } from "../ui/button";
 import { RecentSlider } from "./_components/recent-slider";
 import { CompaniesAppliedTo } from "./_components/companies-appied";
@@ -7,7 +6,7 @@ import { Link } from "@tanstack/react-router";
 
 export const Dashboard = () => {
   return (
-    <div className="w-full 2xl:max-w-7xl max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mt-10 mx-auto h-full">
+    <div className="w-full max-w-[300px] sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-lg 2xl:max-w-[1440px] mt-10 mx-auto h-full">
       <header className="p-2 flex items-center justify-between">
         <div className="flex flex-col">
           <h1 className="text-xl font-semibold">Hi, Jatin</h1>

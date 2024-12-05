@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export default function GettingStarted() {
   return (
     <div className="w-screen h-screen border p-4">
-      <div className="w-full 2xl:max-w-7xl max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl  mx-auto h-full">
+      <div className="w-full max-w-[300px] sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-lg 2xl:max-w-[1440px]  mx-auto h-full">
         <header className="">
           <h3 className="text-xl font-semibold">Getting Strated</h3>
           <p className="text-sm font-normal text-muted-foreground">
