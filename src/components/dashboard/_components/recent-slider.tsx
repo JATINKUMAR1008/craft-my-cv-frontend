@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import React from "react";
+
 
 export const RecentSlider = () => {
   return (
@@ -11,8 +11,8 @@ export const RecentSlider = () => {
       <main className="mt-3">
         <ScrollArea className="whitespace-nowrap">
           <div className="flex w-max space-x-4">
-            {[1, 2, 3, 4, 5, 6].map((item, index) => (
-              <ResumeCard key={index} />
+            {[1, 2, 3, 4, 5, 6].map((item) => (
+              <ResumeCard key={item} />
             ))}
           </div>
           <ScrollBar orientation="horizontal" />

@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Button } from "../ui/button";
 import { RecentSlider } from "./_components/recent-slider";
 import { CompaniesAppliedTo } from "./_components/companies-appied";

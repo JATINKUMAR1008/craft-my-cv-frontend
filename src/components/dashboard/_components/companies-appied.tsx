@@ -9,7 +9,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { CheckIcon } from "lucide-react";
-import React from "react";
 
 export const CompaniesAppliedTo = () => {
   return (
