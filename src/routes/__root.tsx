@@ -1,15 +1,23 @@
-import * as React from 'react'
-import { Outlet, createRootRoute } from '@tanstack/react-router'
+import * as React from "react";
+import {
+  Outlet,
+  createRootRoute,
+  createRootRouteWithContext,
+} from "@tanstack/react-router";
+import { UserContextType } from "@/contexts/user.details";
 
-export const Route = createRootRoute({
+type RouteContext = {
+  authentication: UserContextType;
+};
+
+export const Route = createRootRouteWithContext<RouteContext>()({
   component: RootComponent,
-})
+});
 
 function RootComponent() {
   return (
     <React.Fragment>
-      {/* <div>Hello "__root"!</div> */}
       <Outlet />
     </React.Fragment>
-  )
+  );
 }

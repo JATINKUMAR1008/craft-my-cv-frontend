@@ -1,5 +1,4 @@
-
-import { AppSidebar } from "@/components/sidebar/app-sidebar";
+import { AppSidebar } from '@/components/sidebar/app-sidebar'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,18 +6,18 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
+} from '@/components/ui/breadcrumb'
+import { Separator } from '@/components/ui/separator'
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+} from '@/components/ui/sidebar'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 
-export const Route = createFileRoute("/dashboard/_layout")({
+export const Route = createFileRoute('/_authenticated/dashboard/_layout')({
   component: RouteComponent,
-});
+})
 
 function RouteComponent() {
   return (
@@ -49,5 +48,5 @@ function RouteComponent() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  );
+  )
 }

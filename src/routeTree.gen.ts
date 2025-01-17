@@ -13,21 +13,58 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AuthenticatedImport } from './routes/_authenticated'
+import { Route as SignupIndexImport } from './routes/signup/index'
+import { Route as SigninIndexImport } from './routes/signin/index'
 import { Route as NewIndexImport } from './routes/new/index'
 import { Route as GettingStartedIndexImport } from './routes/getting-started/index'
-import { Route as DashboardLayoutImport } from './routes/dashboard/_layout'
-import { Route as DashboardLayoutIndexImport } from './routes/dashboard/_layout/index'
-import { Route as DashboardLayoutResumesRouteImport } from './routes/dashboard/_layout/resumes/route'
+import { Route as EditorIndexImport } from './routes/editor/index'
+import { Route as AuthenticatedCreateIndexImport } from './routes/_authenticated/create/index'
+import { Route as EditorSplatResumeIdImport } from './routes/editor/$.resumeId'
+import { Route as AuthenticatedDashboardv2LayoutImport } from './routes/_authenticated/dashboard_v2/_layout'
+import { Route as AuthenticatedDashboardLayoutImport } from './routes/_authenticated/dashboard/_layout'
+import { Route as AuthenticatedDashboardv2LayoutIndexImport } from './routes/_authenticated/dashboard_v2/_layout/index'
+import { Route as AuthenticatedDashboardLayoutIndexImport } from './routes/_authenticated/dashboard/_layout/index'
+import { Route as AuthenticatedDashboardLayoutResumesRouteImport } from './routes/_authenticated/dashboard/_layout/resumes/route'
+import { Route as AuthenticatedDashboardLayoutEditorRouteImport } from './routes/_authenticated/dashboard/_layout/editor/route'
 
 // Create Virtual Routes
 
-const DashboardImport = createFileRoute('/dashboard')()
+const AuthenticatedDashboardv2Import = createFileRoute(
+  '/_authenticated/dashboard_v2',
+)()
+const AuthenticatedDashboardImport = createFileRoute(
+  '/_authenticated/dashboard',
+)()
 
 // Create/Update Routes
 
-const DashboardRoute = DashboardImport.update({
+const AuthenticatedRoute = AuthenticatedImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthenticatedDashboardv2Route = AuthenticatedDashboardv2Import.update({
+  id: '/dashboard_v2',
+  path: '/dashboard_v2',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedDashboardRoute = AuthenticatedDashboardImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const SignupIndexRoute = SignupIndexImport.update({
+  id: '/signup/',
+  path: '/signup/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SigninIndexRoute = SigninIndexImport.update({
+  id: '/signin/',
+  path: '/signin/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -43,41 +80,81 @@ const GettingStartedIndexRoute = GettingStartedIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const DashboardLayoutRoute = DashboardLayoutImport.update({
-  id: '/_layout',
-  getParentRoute: () => DashboardRoute,
+const EditorIndexRoute = EditorIndexImport.update({
+  id: '/editor/',
+  path: '/editor/',
+  getParentRoute: () => rootRoute,
 } as any)
 
-const DashboardLayoutIndexRoute = DashboardLayoutIndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DashboardLayoutRoute,
+const AuthenticatedCreateIndexRoute = AuthenticatedCreateIndexImport.update({
+  id: '/create/',
+  path: '/create/',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 
-const DashboardLayoutResumesRouteRoute =
-  DashboardLayoutResumesRouteImport.update({
+const EditorSplatResumeIdRoute = EditorSplatResumeIdImport.update({
+  id: '/editor/$/resumeId',
+  path: '/editor/$/resumeId',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthenticatedDashboardv2LayoutRoute =
+  AuthenticatedDashboardv2LayoutImport.update({
+    id: '/_layout',
+    getParentRoute: () => AuthenticatedDashboardv2Route,
+  } as any)
+
+const AuthenticatedDashboardLayoutRoute =
+  AuthenticatedDashboardLayoutImport.update({
+    id: '/_layout',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+
+const AuthenticatedDashboardv2LayoutIndexRoute =
+  AuthenticatedDashboardv2LayoutIndexImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardv2LayoutRoute,
+  } as any)
+
+const AuthenticatedDashboardLayoutIndexRoute =
+  AuthenticatedDashboardLayoutIndexImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardLayoutRoute,
+  } as any)
+
+const AuthenticatedDashboardLayoutResumesRouteRoute =
+  AuthenticatedDashboardLayoutResumesRouteImport.update({
     id: '/resumes',
     path: '/resumes',
-    getParentRoute: () => DashboardLayoutRoute,
+    getParentRoute: () => AuthenticatedDashboardLayoutRoute,
+  } as any)
+
+const AuthenticatedDashboardLayoutEditorRouteRoute =
+  AuthenticatedDashboardLayoutEditorRouteImport.update({
+    id: '/editor',
+    path: '/editor',
+    getParentRoute: () => AuthenticatedDashboardLayoutRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedImport
       parentRoute: typeof rootRoute
     }
-    '/dashboard/_layout': {
-      id: '/dashboard/_layout'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardLayoutImport
-      parentRoute: typeof DashboardRoute
+    '/editor/': {
+      id: '/editor/'
+      path: '/editor'
+      fullPath: '/editor'
+      preLoaderRoute: typeof EditorIndexImport
+      parentRoute: typeof rootRoute
     }
     '/getting-started/': {
       id: '/getting-started/'
@@ -93,107 +170,299 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewIndexImport
       parentRoute: typeof rootRoute
     }
-    '/dashboard/_layout/resumes': {
-      id: '/dashboard/_layout/resumes'
+    '/signin/': {
+      id: '/signin/'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/signup/': {
+      id: '/signup/'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/dashboard/_layout': {
+      id: '/_authenticated/dashboard/_layout'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard_v2': {
+      id: '/_authenticated/dashboard_v2'
+      path: '/dashboard_v2'
+      fullPath: '/dashboard_v2'
+      preLoaderRoute: typeof AuthenticatedDashboardv2Import
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/dashboard_v2/_layout': {
+      id: '/_authenticated/dashboard_v2/_layout'
+      path: '/dashboard_v2'
+      fullPath: '/dashboard_v2'
+      preLoaderRoute: typeof AuthenticatedDashboardv2LayoutImport
+      parentRoute: typeof AuthenticatedDashboardv2Route
+    }
+    '/editor/$/resumeId': {
+      id: '/editor/$/resumeId'
+      path: '/editor/$/resumeId'
+      fullPath: '/editor/$/resumeId'
+      preLoaderRoute: typeof EditorSplatResumeIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/_authenticated/create/': {
+      id: '/_authenticated/create/'
+      path: '/create'
+      fullPath: '/create'
+      preLoaderRoute: typeof AuthenticatedCreateIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/dashboard/_layout/editor': {
+      id: '/_authenticated/dashboard/_layout/editor'
+      path: '/editor'
+      fullPath: '/dashboard/editor'
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutEditorRouteImport
+      parentRoute: typeof AuthenticatedDashboardLayoutImport
+    }
+    '/_authenticated/dashboard/_layout/resumes': {
+      id: '/_authenticated/dashboard/_layout/resumes'
       path: '/resumes'
       fullPath: '/dashboard/resumes'
-      preLoaderRoute: typeof DashboardLayoutResumesRouteImport
-      parentRoute: typeof DashboardLayoutImport
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutResumesRouteImport
+      parentRoute: typeof AuthenticatedDashboardLayoutImport
     }
-    '/dashboard/_layout/': {
-      id: '/dashboard/_layout/'
+    '/_authenticated/dashboard/_layout/': {
+      id: '/_authenticated/dashboard/_layout/'
       path: '/'
       fullPath: '/dashboard/'
-      preLoaderRoute: typeof DashboardLayoutIndexImport
-      parentRoute: typeof DashboardLayoutImport
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutIndexImport
+      parentRoute: typeof AuthenticatedDashboardLayoutImport
+    }
+    '/_authenticated/dashboard_v2/_layout/': {
+      id: '/_authenticated/dashboard_v2/_layout/'
+      path: '/'
+      fullPath: '/dashboard_v2/'
+      preLoaderRoute: typeof AuthenticatedDashboardv2LayoutIndexImport
+      parentRoute: typeof AuthenticatedDashboardv2LayoutImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface DashboardLayoutRouteChildren {
-  DashboardLayoutResumesRouteRoute: typeof DashboardLayoutResumesRouteRoute
-  DashboardLayoutIndexRoute: typeof DashboardLayoutIndexRoute
+interface AuthenticatedDashboardLayoutRouteChildren {
+  AuthenticatedDashboardLayoutEditorRouteRoute: typeof AuthenticatedDashboardLayoutEditorRouteRoute
+  AuthenticatedDashboardLayoutResumesRouteRoute: typeof AuthenticatedDashboardLayoutResumesRouteRoute
+  AuthenticatedDashboardLayoutIndexRoute: typeof AuthenticatedDashboardLayoutIndexRoute
 }
 
-const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
-  DashboardLayoutResumesRouteRoute: DashboardLayoutResumesRouteRoute,
-  DashboardLayoutIndexRoute: DashboardLayoutIndexRoute,
+const AuthenticatedDashboardLayoutRouteChildren: AuthenticatedDashboardLayoutRouteChildren =
+  {
+    AuthenticatedDashboardLayoutEditorRouteRoute:
+      AuthenticatedDashboardLayoutEditorRouteRoute,
+    AuthenticatedDashboardLayoutResumesRouteRoute:
+      AuthenticatedDashboardLayoutResumesRouteRoute,
+    AuthenticatedDashboardLayoutIndexRoute:
+      AuthenticatedDashboardLayoutIndexRoute,
+  }
+
+const AuthenticatedDashboardLayoutRouteWithChildren =
+  AuthenticatedDashboardLayoutRoute._addFileChildren(
+    AuthenticatedDashboardLayoutRouteChildren,
+  )
+
+interface AuthenticatedDashboardRouteChildren {
+  AuthenticatedDashboardLayoutRoute: typeof AuthenticatedDashboardLayoutRouteWithChildren
 }
 
-const DashboardLayoutRouteWithChildren = DashboardLayoutRoute._addFileChildren(
-  DashboardLayoutRouteChildren,
-)
+const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
+  {
+    AuthenticatedDashboardLayoutRoute:
+      AuthenticatedDashboardLayoutRouteWithChildren,
+  }
 
-interface DashboardRouteChildren {
-  DashboardLayoutRoute: typeof DashboardLayoutRouteWithChildren
+const AuthenticatedDashboardRouteWithChildren =
+  AuthenticatedDashboardRoute._addFileChildren(
+    AuthenticatedDashboardRouteChildren,
+  )
+
+interface AuthenticatedDashboardv2LayoutRouteChildren {
+  AuthenticatedDashboardv2LayoutIndexRoute: typeof AuthenticatedDashboardv2LayoutIndexRoute
 }
 
-const DashboardRouteChildren: DashboardRouteChildren = {
-  DashboardLayoutRoute: DashboardLayoutRouteWithChildren,
+const AuthenticatedDashboardv2LayoutRouteChildren: AuthenticatedDashboardv2LayoutRouteChildren =
+  {
+    AuthenticatedDashboardv2LayoutIndexRoute:
+      AuthenticatedDashboardv2LayoutIndexRoute,
+  }
+
+const AuthenticatedDashboardv2LayoutRouteWithChildren =
+  AuthenticatedDashboardv2LayoutRoute._addFileChildren(
+    AuthenticatedDashboardv2LayoutRouteChildren,
+  )
+
+interface AuthenticatedDashboardv2RouteChildren {
+  AuthenticatedDashboardv2LayoutRoute: typeof AuthenticatedDashboardv2LayoutRouteWithChildren
 }
 
-const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
-  DashboardRouteChildren,
+const AuthenticatedDashboardv2RouteChildren: AuthenticatedDashboardv2RouteChildren =
+  {
+    AuthenticatedDashboardv2LayoutRoute:
+      AuthenticatedDashboardv2LayoutRouteWithChildren,
+  }
+
+const AuthenticatedDashboardv2RouteWithChildren =
+  AuthenticatedDashboardv2Route._addFileChildren(
+    AuthenticatedDashboardv2RouteChildren,
+  )
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
+  AuthenticatedDashboardv2Route: typeof AuthenticatedDashboardv2RouteWithChildren
+  AuthenticatedCreateIndexRoute: typeof AuthenticatedCreateIndexRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
+  AuthenticatedDashboardv2Route: AuthenticatedDashboardv2RouteWithChildren,
+  AuthenticatedCreateIndexRoute: AuthenticatedCreateIndexRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
 )
 
 export interface FileRoutesByFullPath {
-  '/dashboard': typeof DashboardLayoutRouteWithChildren
+  '': typeof AuthenticatedRouteWithChildren
+  '/editor': typeof EditorIndexRoute
   '/getting-started': typeof GettingStartedIndexRoute
   '/new': typeof NewIndexRoute
-  '/dashboard/resumes': typeof DashboardLayoutResumesRouteRoute
-  '/dashboard/': typeof DashboardLayoutIndexRoute
+  '/signin': typeof SigninIndexRoute
+  '/signup': typeof SignupIndexRoute
+  '/dashboard': typeof AuthenticatedDashboardLayoutRouteWithChildren
+  '/dashboard_v2': typeof AuthenticatedDashboardv2LayoutRouteWithChildren
+  '/editor/$/resumeId': typeof EditorSplatResumeIdRoute
+  '/create': typeof AuthenticatedCreateIndexRoute
+  '/dashboard/editor': typeof AuthenticatedDashboardLayoutEditorRouteRoute
+  '/dashboard/resumes': typeof AuthenticatedDashboardLayoutResumesRouteRoute
+  '/dashboard/': typeof AuthenticatedDashboardLayoutIndexRoute
+  '/dashboard_v2/': typeof AuthenticatedDashboardv2LayoutIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/dashboard': typeof DashboardLayoutIndexRoute
+  '': typeof AuthenticatedRouteWithChildren
+  '/editor': typeof EditorIndexRoute
   '/getting-started': typeof GettingStartedIndexRoute
   '/new': typeof NewIndexRoute
-  '/dashboard/resumes': typeof DashboardLayoutResumesRouteRoute
+  '/signin': typeof SigninIndexRoute
+  '/signup': typeof SignupIndexRoute
+  '/dashboard': typeof AuthenticatedDashboardLayoutIndexRoute
+  '/dashboard_v2': typeof AuthenticatedDashboardv2LayoutIndexRoute
+  '/editor/$/resumeId': typeof EditorSplatResumeIdRoute
+  '/create': typeof AuthenticatedCreateIndexRoute
+  '/dashboard/editor': typeof AuthenticatedDashboardLayoutEditorRouteRoute
+  '/dashboard/resumes': typeof AuthenticatedDashboardLayoutResumesRouteRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/dashboard': typeof DashboardRouteWithChildren
-  '/dashboard/_layout': typeof DashboardLayoutRouteWithChildren
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/editor/': typeof EditorIndexRoute
   '/getting-started/': typeof GettingStartedIndexRoute
   '/new/': typeof NewIndexRoute
-  '/dashboard/_layout/resumes': typeof DashboardLayoutResumesRouteRoute
-  '/dashboard/_layout/': typeof DashboardLayoutIndexRoute
+  '/signin/': typeof SigninIndexRoute
+  '/signup/': typeof SignupIndexRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/_authenticated/dashboard/_layout': typeof AuthenticatedDashboardLayoutRouteWithChildren
+  '/_authenticated/dashboard_v2': typeof AuthenticatedDashboardv2RouteWithChildren
+  '/_authenticated/dashboard_v2/_layout': typeof AuthenticatedDashboardv2LayoutRouteWithChildren
+  '/editor/$/resumeId': typeof EditorSplatResumeIdRoute
+  '/_authenticated/create/': typeof AuthenticatedCreateIndexRoute
+  '/_authenticated/dashboard/_layout/editor': typeof AuthenticatedDashboardLayoutEditorRouteRoute
+  '/_authenticated/dashboard/_layout/resumes': typeof AuthenticatedDashboardLayoutResumesRouteRoute
+  '/_authenticated/dashboard/_layout/': typeof AuthenticatedDashboardLayoutIndexRoute
+  '/_authenticated/dashboard_v2/_layout/': typeof AuthenticatedDashboardv2LayoutIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/dashboard'
+    | ''
+    | '/editor'
     | '/getting-started'
     | '/new'
+    | '/signin'
+    | '/signup'
+    | '/dashboard'
+    | '/dashboard_v2'
+    | '/editor/$/resumeId'
+    | '/create'
+    | '/dashboard/editor'
     | '/dashboard/resumes'
     | '/dashboard/'
+    | '/dashboard_v2/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/dashboard' | '/getting-started' | '/new' | '/dashboard/resumes'
+  to:
+    | ''
+    | '/editor'
+    | '/getting-started'
+    | '/new'
+    | '/signin'
+    | '/signup'
+    | '/dashboard'
+    | '/dashboard_v2'
+    | '/editor/$/resumeId'
+    | '/create'
+    | '/dashboard/editor'
+    | '/dashboard/resumes'
   id:
     | '__root__'
-    | '/dashboard'
-    | '/dashboard/_layout'
+    | '/_authenticated'
+    | '/editor/'
     | '/getting-started/'
     | '/new/'
-    | '/dashboard/_layout/resumes'
-    | '/dashboard/_layout/'
+    | '/signin/'
+    | '/signup/'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/dashboard/_layout'
+    | '/_authenticated/dashboard_v2'
+    | '/_authenticated/dashboard_v2/_layout'
+    | '/editor/$/resumeId'
+    | '/_authenticated/create/'
+    | '/_authenticated/dashboard/_layout/editor'
+    | '/_authenticated/dashboard/_layout/resumes'
+    | '/_authenticated/dashboard/_layout/'
+    | '/_authenticated/dashboard_v2/_layout/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  DashboardRoute: typeof DashboardRouteWithChildren
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  EditorIndexRoute: typeof EditorIndexRoute
   GettingStartedIndexRoute: typeof GettingStartedIndexRoute
   NewIndexRoute: typeof NewIndexRoute
+  SigninIndexRoute: typeof SigninIndexRoute
+  SignupIndexRoute: typeof SignupIndexRoute
+  EditorSplatResumeIdRoute: typeof EditorSplatResumeIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  DashboardRoute: DashboardRouteWithChildren,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  EditorIndexRoute: EditorIndexRoute,
   GettingStartedIndexRoute: GettingStartedIndexRoute,
   NewIndexRoute: NewIndexRoute,
+  SigninIndexRoute: SigninIndexRoute,
+  SignupIndexRoute: SignupIndexRoute,
+  EditorSplatResumeIdRoute: EditorSplatResumeIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -206,24 +475,25 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/dashboard",
+        "/_authenticated",
+        "/editor/",
         "/getting-started/",
-        "/new/"
+        "/new/",
+        "/signin/",
+        "/signup/",
+        "/editor/$/resumeId"
       ]
     },
-    "/dashboard": {
-      "filePath": "dashboard",
+    "/_authenticated": {
+      "filePath": "_authenticated.tsx",
       "children": [
-        "/dashboard/_layout"
+        "/_authenticated/dashboard",
+        "/_authenticated/dashboard_v2",
+        "/_authenticated/create/"
       ]
     },
-    "/dashboard/_layout": {
-      "filePath": "dashboard/_layout.tsx",
-      "parent": "/dashboard",
-      "children": [
-        "/dashboard/_layout/resumes",
-        "/dashboard/_layout/"
-      ]
+    "/editor/": {
+      "filePath": "editor/index.tsx"
     },
     "/getting-started/": {
       "filePath": "getting-started/index.tsx"
@@ -231,13 +501,64 @@ export const routeTree = rootRoute
     "/new/": {
       "filePath": "new/index.tsx"
     },
-    "/dashboard/_layout/resumes": {
-      "filePath": "dashboard/_layout/resumes/route.tsx",
-      "parent": "/dashboard/_layout"
+    "/signin/": {
+      "filePath": "signin/index.tsx"
     },
-    "/dashboard/_layout/": {
-      "filePath": "dashboard/_layout/index.tsx",
-      "parent": "/dashboard/_layout"
+    "/signup/": {
+      "filePath": "signup/index.tsx"
+    },
+    "/_authenticated/dashboard": {
+      "filePath": "_authenticated/dashboard",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/dashboard/_layout"
+      ]
+    },
+    "/_authenticated/dashboard/_layout": {
+      "filePath": "_authenticated/dashboard/_layout.tsx",
+      "parent": "/_authenticated/dashboard",
+      "children": [
+        "/_authenticated/dashboard/_layout/editor",
+        "/_authenticated/dashboard/_layout/resumes",
+        "/_authenticated/dashboard/_layout/"
+      ]
+    },
+    "/_authenticated/dashboard_v2": {
+      "filePath": "_authenticated/dashboard_v2",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/dashboard_v2/_layout"
+      ]
+    },
+    "/_authenticated/dashboard_v2/_layout": {
+      "filePath": "_authenticated/dashboard_v2/_layout.tsx",
+      "parent": "/_authenticated/dashboard_v2",
+      "children": [
+        "/_authenticated/dashboard_v2/_layout/"
+      ]
+    },
+    "/editor/$/resumeId": {
+      "filePath": "editor/$.resumeId.tsx"
+    },
+    "/_authenticated/create/": {
+      "filePath": "_authenticated/create/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/dashboard/_layout/editor": {
+      "filePath": "_authenticated/dashboard/_layout/editor/route.tsx",
+      "parent": "/_authenticated/dashboard/_layout"
+    },
+    "/_authenticated/dashboard/_layout/resumes": {
+      "filePath": "_authenticated/dashboard/_layout/resumes/route.tsx",
+      "parent": "/_authenticated/dashboard/_layout"
+    },
+    "/_authenticated/dashboard/_layout/": {
+      "filePath": "_authenticated/dashboard/_layout/index.tsx",
+      "parent": "/_authenticated/dashboard/_layout"
+    },
+    "/_authenticated/dashboard_v2/_layout/": {
+      "filePath": "_authenticated/dashboard_v2/_layout/index.tsx",
+      "parent": "/_authenticated/dashboard_v2/_layout"
     }
   }
 }

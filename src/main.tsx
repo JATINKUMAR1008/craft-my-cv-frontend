@@ -4,9 +4,16 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import "./index.css";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
+import { useAuth } from "./hooks/useAuth";
+import App from "./App";
 
 // Create a new router instance
-const router = createRouter({ routeTree });
+const router = createRouter({
+  routeTree,
+  context: {
+    authentication: undefined!,
+  },
+});
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
@@ -21,7 +28,10 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      {/* <RouterProvider router={router} context={{
+        authentication: auth
+      }}/> */}
+      <App/>
     </StrictMode>
   );
 }
